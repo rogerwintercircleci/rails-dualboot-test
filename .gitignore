@@ -1,0 +1,33 @@
+# Bundler
+.bundle/
+vendor/bundle/
+
+# Ignore bundler config and local gem cache
+/.bundle
+/.cache
+
+# Ignore all logfiles and tempfiles
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+
+# Ignore master key for decrypting credentials
+/config/master.key
+
+# Ignore Spring files
+/spring/*.pid
+
+# macOS
+.DS_Store
+
+# Editor files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/

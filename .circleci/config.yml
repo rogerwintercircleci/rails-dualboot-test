@@ -1,0 +1,80 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: cimg/ruby:3.2.3
+    working_directory: ~/rails_dualboot_test
+    environment:
+      RAILS_ENV: test
+      BUNDLE_PATH: ~/.cache/bundle
+    steps:
+      - checkout
+      
+      - restore_cache:
+          name: "Ruby dependencies: cache restore"
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+            - v1-gems-
+      
+      - run:
+          name: "Ruby dependencies: install"
+          command: |
+            set -x
+            bundle config set --local path '\''~/.cache/bundle'\''
+            bundle install
+      
+      - save_cache:
+          name: "Ruby dependencies: cache save"
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ~/.cache/bundle
+      
+      - run:
+          name: "Run tests"
+          command: |
+            bundle exec rails --version
+            echo "Rails 7.2 tests would run here"
+
+  build_next:
+    docker:
+      - image: cimg/ruby:3.2.3
+    working_directory: ~/rails_dualboot_test
+    environment:
+      RAILS_ENV: test
+      BUNDLE_PATH: ~/.cache/bundle
+      BUNDLE_GEMFILE: Gemfile.next
+    steps:
+      - checkout
+      
+      - restore_cache:
+          name: "Ruby dependencies: cache restore"
+          keys:
+            - v1-gems-{{ checksum "Gemfile.lock" }}
+            - v1-gems-
+      
+      - run:
+          name: "Ruby dependencies: install"
+          command: |
+            set -x
+            bundle config set --local path '\''~/.cache/bundle'\''
+            bundle install
+      
+      - save_cache:
+          name: "Ruby dependencies: cache save"
+          key: v1-gems-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ~/.cache/bundle
+      
+      - run:
+          name: "Run tests"
+          command: |
+            bundle exec rails --version
+            echo "Rails 8.0 tests would run here"
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build
+      - build_next
