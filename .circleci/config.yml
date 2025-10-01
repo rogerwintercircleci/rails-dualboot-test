@@ -21,7 +21,7 @@ jobs:
           name: "Ruby dependencies: install"
           command: |
             set -x
-            bundle config set --local path '\''~/.cache/bundle'\''
+            bundle config set --local path ~/.cache/bundle
             bundle install
       
       - save_cache:
@@ -57,7 +57,7 @@ jobs:
           name: "Ruby dependencies: install"
           command: |
             set -x
-            bundle config set --local path '\''~/.cache/bundle'\''
+            bundle config set --local path ~/.cache/bundle
             bundle install
       
       - save_cache:
